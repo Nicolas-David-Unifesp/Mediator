@@ -1,8 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-
-
-
+//Classe main
 public class Main_code {// Classe principal para testar o padrão Mediator
     public static void main(String[] args) {
         ConcreteCollaborator1 alice = new ConcreteCollaborator1("Alice");
