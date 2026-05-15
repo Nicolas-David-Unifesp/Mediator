@@ -1,70 +1,78 @@
-import Mediator_code.Mediator;
-import Mediator_code.ConcreteMediator;
+﻿abstract class Collaborator {// Classe abstrata para os colaboradores
+    protected Mediator mediator;
+    protected String name;
+    protected int id;
 
+    public Collaborator(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
 
-
-
-export public abstract class Collaborator {
-    private Mediator mediator;
     public void setMediator(Mediator mediator) {
         this.mediator = mediator;
+    }// Método para enviar mensagens através do Mediator
+
+    public void sendMessage(String message) {
+        if (mediator == null) {
+            System.out.println(name + " não está conectado a um Mediator.");
+            return;//Verifica se o colaborador não está conectado a um colaborador
+        }
+        mediator.sendMessage(message, this);
+    }
+
+    public void receiveMessage(String message) {
+        System.out.println(name + " recebeu: " + message);
+    }
+
+    public void clearCollaborators() {
+        if (mediator != null) {
+            mediator.clearAllCollaborators();
+        }//Aqui verifica se o colaborador está concetado a um mediador para depois limpar tudo na lista.
+    }
+
+    public void notifyCollaborators(String message) {
+        if (mediator != null) {
+            mediator.notifyCollaborators(message, this);
+        }//Só manda a notificação para os outros colaboradores se o colaborador estiver conectado a um mediador.
+    }
+
+    public void removeCollaborator() {
+        if (mediator != null) {
+            mediator.removeCollaborator(this);
+        }
+    }
+
+    public void addCollaborator(Collaborator collaborator) {
+        if (mediator != null) {
+            mediator.addCollaborator(collaborator);
+        }
     }
 }
 
-
-
-public class ConcreteCollaborator1 extends Collaborator {
-    public String name;
-    public int id;
+class ConcreteCollaborator1 extends Collaborator {
     public ConcreteCollaborator1(String name) {
-        this.name = name;
-        this.id = 1;
-    }
-    public void receiveMessage(String message) {
-        mediator.sendmessage(message, this);
-    }
-    public void sendMessage(String message) {
-        mediator.sendmessage(message, this);
-    }
-    public void clearCollaborators() {
-        mediator.clear_all_Collaborators();
-    }
-    public void notifyCollaborators(String message) {
-        mediator.notifyCollaborators(message, this);
-    }
-    public void removeCollaborator() {
-        mediator.removeCollaborator(this);
-    }
-    public void addCollaborator(Collaborator collaborator) {
-        mediator.addCollaborator(collaborator);
-    }
-    
+        super(name, 1);
+    }//Implementação do colaborador concreto 1
 }
 
-public class ConcreteCollaborator2 extends Collaborator {
-    public String name;
-    public int id;
+class ConcreteCollaborator2 extends Collaborator {
     public ConcreteCollaborator2(String name) {
-        this.name = name;
-        this.id = 2;
+        super(name, 2);
     }
-    public void receiveMessage(String message) {
-        mediator.sendmessage(message, this);
-    }
-    public void sendMessage(String message) {
-        mediator.sendmessage(message, this);
-    }
-    public void clearCollaborators() {
-        mediator.clear_all_Collaborators();
-    }
-    public void notifyCollaborators(String message) {
-        mediator.notifyCollaborators(message, this);
-    }
-    public void removeCollaborator() {
-        mediator.removeCollaborator(this);
-    }
-    public void addCollaborator(Collaborator collaborator) {
-        mediator.addCollaborator(collaborator);
-    }
+}
 
+//Parte do Main que vou ter que colocar separado em outro arquivo.
+
+public class Collaborators_code {// Classe principal para testar o padrão Mediator
+    public static void main(String[] args) {
+        ConcreteCollaborator1 alice = new ConcreteCollaborator1("Alice");
+        ConcreteCollaborator2 bob = new ConcreteCollaborator2("Bob");
+
+        ConcreteMediator mediator = new ConcreteMediator();
+        mediator.addCollaborator(alice);
+        mediator.addCollaborator(bob);
+
+        alice.sendMessage("Olá, Bob!");
+        bob.sendMessage("Oi, Alice! Tudo certo?");
+    }
 }
