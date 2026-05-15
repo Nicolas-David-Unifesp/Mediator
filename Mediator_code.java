@@ -1,67 +1,50 @@
+import java.util.ArrayList;
+import java.util.List;
+
 interface Mediator {
-    public void sendmessage(String message, Collaborator sender);
-    public void addCollaborator(Collaborator collaborator);
-    public void removeCollaborator(Collaborator collaborator);
-    public void notifyCollaborators(String message, Collaborator sender);
-    public void clear_all_Collaborators();
+    void sendMessage(String message, Collaborator sender);
+    void addCollaborator(Collaborator collaborator);
+    void removeCollaborator(Collaborator collaborator);
+    void notifyCollaborators(String message, Collaborator sender);
+    void clearAllCollaborators();
 }
 
-public class ConcreteMediator implements Mediator {
-    Collaborator collaborator1;
-    Collaborator collaborator2;
+class ConcreteMediator implements Mediator {
+    private final List<Collaborator> collaborators = new ArrayList<>();
 
-    public ConcreteMediator(Collaborator collaborator1, Collaborator collaborator2) {
-        this.collaborator1 = collaborator1;
-        this.collaborator2 = collaborator2;
-        this.collaborator1.setMediator(this);
-        this.collaborator2.setMediator(this);
-    }
-
-    public void setCollaborator1(Collaborator collaborator1) {
-        this.collaborator1 = collaborator1;
-        this.collaborator1.setMediator(this);
-    }
-
-    public void setCollaborator2(Collaborator collaborator2) {
-        this.collaborator2 = collaborator2;
-        this.collaborator2.setMediator(this);
+    public ConcreteMediator() {
     }
 
     @Override
-    public void sendmessage(String message, Collaborator sender) {
-        if (sender == collaborator1) {
-            collaborator2.receiveMessage(message);
-        } else if (sender == collaborator2) {
-            collaborator1.receiveMessage(message);
+    public void sendMessage(String message, Collaborator sender) {
+        for (Collaborator collaborator : collaborators) {
+            if (collaborator != sender) {
+                collaborator.receiveMessage(message);
+            }
         }
     }
 
     @Override
     public void addCollaborator(Collaborator collaborator) {
-        /*if (collaborator1 == null) {
-        //    setCollaborator1(collaborator);
-        //} else if (collaborator2 == null) {
-        //    setCollaborator2(collaborator);
-        //} else {
-        //    setCollaborator1(collaborator);
-            setCollaborator2(collaborator);
-        } */
-
-        
+        if (collaborator == null || collaborators.contains(collaborator)) {
+            return;
+        }
+        collaborators.add(collaborator);
+        collaborator.setMediator(this);
     }
 
     @Override
     public void removeCollaborator(Collaborator collaborator) {
-        // Implement collaborator removal logic here
+        collaborators.remove(collaborator);
     }
 
     @Override
     public void notifyCollaborators(String message, Collaborator sender) {
-        // Implement collaborator notification logic here
+        sendMessage("[NOTIFICAÇÃO] " + message, sender);
     }
 
     @Override
-    public void clear_all_Collaborators() {
-        // Implement collaborator clearing logic here
+    public void clearAllCollaborators() {
+        collaborators.clear();
     }
 }

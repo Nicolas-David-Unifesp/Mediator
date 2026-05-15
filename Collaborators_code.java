@@ -1,6 +1,10 @@
+import Mediator_code.Mediator;
+import Mediator_code.ConcreteMediator;
 
 
-public abstract class Collaborator {
+
+
+export public abstract class Collaborator {
     private Mediator mediator;
     public void setMediator(Mediator mediator) {
         this.mediator = mediator;
