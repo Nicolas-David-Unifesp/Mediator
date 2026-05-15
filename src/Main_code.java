@@ -14,5 +14,9 @@ public class Main_code {// Classe principal para testar o padrão Mediator
 
         alice.sendMessage("Olá, Bob!");
         bob.sendMessage("Oi, Alice! Tudo certo?");
+        alice.notifyCollaborators("Alice enviou uma mensagem.");
+        bob.removeCollaborator();
+        alice.sendMessage("Bob, você ainda está aí? Acho que o grupo morreu.");
+        alice.clearCollaborators();
     }
 }
